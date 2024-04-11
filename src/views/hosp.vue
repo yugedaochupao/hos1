@@ -3,8 +3,8 @@
     <div class="box">
       <div class="sbox">
         <div class="login-methods">
-          <button class="login-btn" id="phoneLoginBtn" @click="showPhoneLogin">手机验证码登录</button>
-          <button class="login-btn" id="thirdPartyLoginBtn" @click="showThirdPartyLogin">第三方登录</button>
+          <button class="login-btn" id="phoneLoginBtn" @click="showPhoneLogin" v-show="!isPhoneLoginVisible">← 手机验证码登录</button>
+          <button class="login-btn" id="thirdPartyLoginBtn" @click="showThirdPartyLogin" v-show="!isThirdPartyLoginVisible">第三方登录 →</button>
         </div>
         <div v-show="isPhoneLoginVisible" class="phone-login">
           <div class="phone-input">
@@ -28,7 +28,11 @@
           </div>
         </div>
         <div>
-          <button class="log">登录</button>
+          <div v-if="showPopup" class="popup">
+            <p v-if="loginSuccess" class="success-message">登录成功！</p>
+            <p v-if="loginFailed" class="error-message">登录失败，请检查手机号和验证码是否正确。</p>
+          </div>
+          <button class="log" @click="simulateLogin">登录</button>
         </div>
       </div>
     </div>
@@ -43,6 +47,9 @@ export default {
       code: '',
       isPhoneLoginVisible: true,
       isThirdPartyLoginVisible: false,
+      loginSuccess: false,
+      loginFailed: false,
+      showPopup: false, 
     };
   },
   methods: {
@@ -53,6 +60,17 @@ export default {
     showThirdPartyLogin() {
       this.isPhoneLoginVisible = false;
       this.isThirdPartyLoginVisible = true;
+    },
+    simulateLogin() {
+      // 模拟登录验证，这里只检查手机号和验证码是否符合要求
+      if (this.phone === '123456789' && this.code === '1234') {
+        this.loginSuccess = true;
+        this.loginFailed = false;
+      } else {
+        this.loginSuccess = false;
+        this.loginFailed = true;
+      }
+      this.showPopup = true; // 登录后显示弹窗
     },
   },
 };
@@ -170,6 +188,37 @@ export default {
   cursor: pointer;
 }
 
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.popup {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.success-message,
+.error-message {
+  margin: 5px 0;
+}
+
+
+ /*当屏幕宽度小于或等于 768 像素时，应用这里面的样式。*/
 @media only screen and (max-width: 768px) {
   .box {
     width: 90%;
@@ -186,6 +235,7 @@ export default {
   }
 }
 </style>
+
 
 
 
