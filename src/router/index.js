@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/hosp.vue'
+import HomeView from '../views/hos1.vue'
 
 const routes = [
   {
@@ -22,6 +22,13 @@ const routes = [
     name: 'hos',
     component: function () {
       return import('../views/hosp.vue')
+    }
+  },
+  {
+    path: '/hos1',
+    name: 'hos1',
+    component: function () {
+      return import('../views/hos1.vue')
     }
   }
 ]

@@ -92,7 +92,7 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background: url('../assets/1.jpg');
+  background: url('../assets/1.jpg'); 
   background-size: cover;
   display: flex;
   justify-content: center;
