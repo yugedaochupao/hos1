@@ -1,56 +1,70 @@
 <template>
     <div class="box">
-        <div class="pu"></div>
-        <div class="welcome">欢迎点餐</div>
-        <div class="welcome1">点餐前请先注册，如有账号直接点击登录按钮登录</div>
-        <button class="create" @click="showLoginBox('create')">创建账号</button>
-        <button class="log" @click="showLoginBox('log')">登录</button>
-        <div class="sm">By logging in or registering, you have agreed to the Terms and Conditions and Privacy Policy.</div>
-        <div class="login-box" id="loginBox" v-if="showLoginBox">  
-            <!-- 登录框的内容 -->  
-            <h2>登录或注册</h2>  
-            <!-- 表单、按钮等 -->  
-        </div> 
-
+      <div class="pu"></div>
+      <div class="welcome">欢迎点餐</div>
+      <div class="welcome1">点餐前请先注册，如有账号直接点击登录按钮登录</div>
+      <button class="create" @click="toggleCreateBox(true)">创建账号</button>
+      <button class="log" @click="toggleLoginBox(true)">登录</button>
+      <div class="sm">By logging in or registering, you have agreed to the Terms and Conditions and Privacy Policy.</div>
+      <div class="overlay" v-if="showCreateBox || showLoginBox" @click="toggleCreateBox(false); toggleLoginBox(false)"></div> <!-- 灰色遮罩层 点击登录弹出登录框 背景变灰 -->
+      <div class="create-box" v-if="showCreateBox">  
+        <!-- 创建账号框的内容 -->  
+        <h2>创建账号</h2>  
+        <form>
+          <input type="text" placeholder="用户名" required>
+          <input type="email" placeholder="邮箱" required>
+          <input type="password" placeholder="密码" required>
+          <button type="submit" @click.prevent="createAccount">注册</button>
+        </form>
+      </div> 
+      <div class="login-box" v-if="showLoginBox">  
+        <!-- 登录框的内容 -->  
+        <h2>登录</h2>  
+        <form>
+          <input type="text" placeholder="用户名" required>
+          <input type="password" placeholder="密码" required>
+          <button type="submit" @click.prevent="login">登录</button>
+        </form>
+      </div> 
     </div>
-
   </template>
-
-
-  <script>  
-    export default {  
-        methods: {  
-            showLoginBox(type) {  
-                const loginBox = document.getElementById('loginBox');  
-                if (loginBox.classList.contains('visible')) {  
-                    // 如果登录框已经是可见的，则隐藏它  
-                    loginBox.classList.remove('visible');  
-                } else {  
-                    // 否则显示登录框，并滚动到它  
-                    loginBox.classList.add('visible');  
-                    window.scrollTo({  
-                        top: document.documentElement.scrollHeight / 2 - loginBox.offsetHeight / 2,  
-                        behavior: 'smooth' // 平滑滚动效果  
-                    });  
-                }  
-            }  
-        }  
+  
+  <script>
+  export default {  
+    data() {
+      return {
+        showCreateBox: false,
+        showLoginBox: false
+      };
+    },
+    methods: {  
+      toggleCreateBox(show) {  
+        this.showCreateBox = show;  
+      },
+      toggleLoginBox(show) {  
+        this.showLoginBox = show;  
+      },
+      createAccount() {
+        console.log('注册按钮被点击了');
+      },
+      login() {
+        console.log('登录按钮被点击了');
+      }
     }  
-    </script>
-
-
-
-
+  }  
+  </script>
+  
   <style>
-.box{
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.pu{
+  .box {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* 添加相对定位 */
+  }
+  
+  .pu {
     width: 80%;
     height: 25%;
     margin-top: 38%;
@@ -58,35 +72,34 @@
     background: url('../assets/2.png') no-repeat;
     background-size: contain;
     background-position: center;
-}
-
-.welcome{
+  }
+  
+  .welcome {
     width: 100%;
     height: 5%;
     margin-top: 10%;
-    display: flex;  
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     font-size: 30px;
-
-}
-.welcome1{
+  }
+  
+  .welcome1 {
     width: 60%;
     height: 5%;
     margin-top: 8%;
-    display: flex;  
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 15px;
     color: #646464;
-
-}
-
-.create{
+  }
+  
+  .create, .log {
     width: 80%;
     height: 53px;
-    margin-top: 20%;
+    margin-top: 10px;
     background: #32B768;
     color: white;
     border: none;
@@ -94,50 +107,78 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 15px;
-
-}
-
-.log{
-    width: 80%;
-    height: 53px;
-    margin-top: 10%;
-    background: #D1FAE5;
-    color: #10B981;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.sm{
+  }
+  
+  .sm {
     width: 60%;
     height: 5%;
     margin-top: 3%;
-    display: flex;  
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 10px;
     color: #646464;
-}
-
-.login-box {  
-    position: fixed;  
-    bottom: -100%;   
-    width: 100%;  
-    background-color: #535353;  
-    padding: 20px;  
-    box-sizing: border-box;  
-    transition: bottom 0.3s ease-in-out; /* 平滑过渡效果 */  
-    z-index: 999; /* 登录框在其他内容之上 */  
-}  
+  }
   
-.login-box.visible {  
-    bottom: 50%; /* 显示时定位到屏幕一半 */  
-    transform: translateY(50%); /* 调整位置，确保居中 */  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+    z-index: 998; /* 低于登录框 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .create-box, .login-box {
+    position: fixed; /* 调整为固定定位 */
+    bottom: 0; /* 显示在底部 */
+    left: 0; /* 从左边开始 */
+    width: 100%;
+    background-color: white; 
+    padding: 20px;
+    box-sizing: border-box;
+    transition: bottom 0.3s ease-in-out;
+    z-index: 999;
+    transform: translateY(-85%); 
+  }
+  
+  .login-box.visible {
+    bottom: 0;
+  }
+  
+  input, button {
+    margin: 10px 0;
+    width: calc(100% - 20px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #32B768;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .log{
+    background-color: #D1FAE5;
+    color: #10B981;
+    cursor: pointer;
+  }
+  
+  .register-link {
+  margin-top: 10px;
+  text-align: center;
+  color: white;
 }
 
-
-
-
-  </style>
+.register-link a {
+  color: #D1FAE5;
+  text-decoration: underline;
+}
+</style>
