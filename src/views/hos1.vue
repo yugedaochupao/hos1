@@ -36,29 +36,33 @@
 </template>
 
 <script>
-export default {  
-  data() {
-    return {
-      showCreateBox: false,
-      showLoginBox: false
-    };
-  },
-  methods: {  
-    toggleCreateBox(show) {  
-      this.showCreateBox = show;  
+  export default {  
+    data() {
+      return {
+        showCreateBox: false,
+        showLoginBox: false,
+        showDropdown: false  // 添加一个状态来控制下拉菜单的显示隐藏
+      };
     },
-    toggleLoginBox(show) {  
-      this.showLoginBox = show;  
-    },
-    createAccount() {
-      console.log('注册按钮被点击了');
-    },
-    login() {
-      console.log('登录按钮被点击了');
-    }
+    methods: {  
+      toggleCreateBox(show) {  
+        this.showCreateBox = show;  
+      },
+      toggleLoginBox(show) {  
+        this.showLoginBox = show;  
+      },
+      createAccount() {
+        console.log('注册按钮被点击了');
+      },
+      login() {
+        console.log('登录按钮被点击了');
+      },
+      toggleDropdown() {  // 点击按钮时切换下拉菜单的显示状态
+        this.showDropdown = !this.showDropdown;
+      }
+    }  
   }  
-}  
-</script>
+  </script>
 
 <style>
 .box {
